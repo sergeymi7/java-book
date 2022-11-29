@@ -8,3 +8,5 @@
 ## Collections
 
 ## Мультисридинг
+
+## Exception
