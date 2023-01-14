@@ -170,14 +170,14 @@ String catName = (String) catNameField.get();
 необходимо вызвать метод `setAccessible(true)`.
 
 ### Получение имени, типа и модификаторов переменной
-####Пример получения имени и типа переменной getName(), getType():
+#### Пример получения имени и типа переменной getName(), getType():
 ```java
 Class<? extends Cat> catClass = new Cat().getClass();
 Field catColorField = catClass.getField("color");
 String catColorFieldName = catColorField.getName(); //color
 Class<?> catColorFieldType = catColorField.getType(); //String
 ```
-####Пример получения модификаторов переменной getModifiers():
+#### Пример получения модификаторов переменной getModifiers():
 ```java
 Class<? extends Cat> catClass = new Cat().getClass();
 Field catColorField = catClass.getField("color");
