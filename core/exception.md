@@ -1,7 +1,7 @@
 # Исключения
 
 ## Иерархия исключений
-<img src="https://github.com/sergeymi7/java-book/blob/main/core/hierarchy-exception.png" height="350" width="700">
+<img src="https://github.com/sergeymi7/java-book/blob/main/core/image/hierarchy-exception.png" height="350" width="700">
 
 Базовым классом для всех исключений является класс `Throwable`. От него уже наследуются два класса: `Error` и `Exception`.
 Все остальные классы являются производными от этих двух классов.
