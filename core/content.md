@@ -8,7 +8,7 @@
 4. [Класс String](https://github.com/sergeymi7/java-book/blob/main/core/string.md)
 5. [Исключения](https://github.com/sergeymi7/java-book/blob/main/core/exception.md)
    - [Коды ошибок HTTP](https://github.com/sergeymi7/java-book/blob/main/core/other/error-code.md)
-6. [Heap и stack](https://github.com/sergeymi7/java-book/blob/main/core/heap_stack.md)
+6. [Типы памяти в JAVA](https://github.com/sergeymi7/java-book/blob/main/core/heap_stack.md)
 7. [Garbage collector](https://github.com/sergeymi7/java-book/blob/main/core/garbage_collector.md)
 8. [Reflection](https://github.com/sergeymi7/java-book/blob/main/core/reflection.md)
 9. [SOLID](https://github.com/sergeymi7/java-book/blob/main/core/solid.md)
