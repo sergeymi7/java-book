@@ -70,3 +70,78 @@ LSP перекликается с контрактным программиро�
 
 Этот принцип служит для того, чтобы устранить зависимость классов верхнего уровня от классов нижнего уровня за счёт
 введения интерфейсов.
+
+### Пример:
+
+```java
+public class WeatherTracker {
+
+    String currentConditions;
+    Phone phone;
+    Emailer emailer;
+
+    public WeatherTracker() {
+        phone = new Phone();
+        emailer = new Emailer();
+    }
+
+    public void setCurrentConditions(String weatherDescription) {
+        this.currentConditions = weatherDescription;
+        if (weatherDescription == "rainy") {
+            String alert = phone.generateWeatherAlert(weatherDescription);
+            System.out.print(alert);
+        }
+        if (weatherDescription == "sunny") {
+            String alert = emailer.generateWeatherAlert(weatherDescription);
+            System.out.print(alert);
+        }
+    }
+}
+```
+
+В зависимости от описания погоды выбирается тип оповещения.
+
+Так вот текущая релизация завязана на реализации **phone** и **emailer**, что не дает нам гибкости в использовании.
+
+Чтобы исправить текущий недостаток, необходимо выделить уровень абстракции, от которой будут зависеть реализации.
+
+В таком случае код будет выглядеть следующим образом:
+
+```java
+interface Notifier {
+
+    public void alertWeatherConditions(String weatherConditions);
+}
+
+public class MobileDevice implements Notifier {
+
+    public void alertWeatherConditions(String weatherConditions) {
+        if (weatherConditions == "rainy")
+            System.out.print("It is rainy");
+    }
+}
+
+public class EmailClient implements Notifier {
+
+    public void alertWeatherConditions(String weatherConditions) {
+        if (weatherConditions == "sunny")
+            ;
+        System.out.print("It is sunny");
+    }
+}
+
+public class WeatherTracker {
+
+    String currentConditions;
+
+    public void setCurrentConditions(String weatherDescription) {
+        this.currentConditions = weatherDescription;
+    }
+
+    public void notify(Notifier notifier) {
+        notifier.alertWeatherConditions(currentConditions);
+    }
+}
+```
+В текущей реализации как раз детали зависят от абстракции и модуль верхнего уровня не зависит от модулей нижнего уровня(
+реализации Notifier).
