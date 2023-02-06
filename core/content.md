@@ -4,7 +4,7 @@
 
 1. [ООП](https://github.com/sergeymi7/java-book/blob/main/core/oop.md)
 2. [Модификаторы доступа](https://github.com/sergeymi7/java-book/blob/main/core/access_modifiers.md)
-3. [Классы](https://github.com/sergeymi7/java-book/blob/main/core/classes.md)
+3. [Классы](https://github.com/sergeymi7/java-book/blob/main/core/class.md)
 4. [Интерфейсы](https://github.com/sergeymi7/java-book/blob/main/core/interface.md)
 5. [Класс Object и его методы](https://github.com/sergeymi7/java-book/blob/main/core/object.md)
 6. [Класс String](https://github.com/sergeymi7/java-book/blob/main/core/string.md)
