@@ -156,3 +156,70 @@ SQL-инъекции, XSS-инъекции и XXE-инъекции - это ти
 
 Важно понимать, что защита от **MITM** атак требует комплексного подхода, и использование любого одного из вышеуказанных
 методов может быть недостаточным.
+
+### Пример MITM атаки:
+
+Создать сервер, который будет слушать входящие соединения на определенном порту и получать запросы клиентов.
+
+```java
+public class Server {
+
+    public static void main(String[] args) throws IOException {
+        ServerSocket serverSocket = new ServerSocket(8080);
+        Socket clientSocket = serverSocket.accept();
+        BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+        String inputLine;
+        while ((inputLine = in.readLine()) != null) {
+            System.out.println("Received message: " + inputLine);
+        }
+        in.close();
+        clientSocket.close();
+        serverSocket.close();
+    }
+}
+```
+
+Создать клиент, который будет отправлять запрос на сервер.
+
+```java
+public class Client {
+
+    public static void main(String[] args) throws IOException {
+        Socket socket = new Socket("localhost", 8080);
+        PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+        out.println("Hello, server!");
+        socket.close();
+    }
+}
+```
+
+Создать класс, который будет перехватывать данные, отправляемые клиентом, и изменять их, прежде чем они будут доставлены
+на сервер.
+
+```java
+public class MITMAttack {
+
+    public static void main(String[] args) throws IOException {
+        ServerSocket serverSocket = new ServerSocket(9090);
+        Socket clientSocket = serverSocket.accept();
+        BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+        String inputLine;
+        while ((inputLine = in.readLine()) != null) {
+            System.out.println("Received message: " + inputLine);
+            // Изменяем сообщение перед отправкой на сервер
+            inputLine = inputLine.replace("Hello, server!", "Hello, hacker!");
+            // Отправляем сообщение на сервер
+            Socket serverSocket = new Socket("localhost", 8080);
+            PrintWriter out = new PrintWriter(serverSocket.getOutputStream(), true);
+            out.println(inputLine);
+            serverSocket.close();
+        }
+        in.close();
+        clientSocket.close();
+        serverSocket.close();
+    }
+}
+```
+
+Запустить сервер, клиент и MITMAttack. Клиент отправит запрос на сервер, который будет перехвачен и изменен MITMAttack,
+а затем отправлен на сервер. Сервер получит измененный запрос и обработает его, не зная о том, что данные были изменены.

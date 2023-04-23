@@ -160,3 +160,81 @@ Signals, RED и USE.
 Наборы метрик **4 Golden Signals**, **RED** и **USE** используются для оценки производительности и доступности
 приложений и могут помочь быстро выявлять проблемы, такие как длительное время ответа, большой объем трафика, ошибки и
 насыщение ресурсов. Каждый из наборов метрик может быть настроен под конкретное приложение и контекст использования.
+
+## Примеры архитектуры мониторинга метрик:
+
+1. **Micrometer**: это библиотека, которая предоставляет универсальный **API** для создания метрик для различных систем
+   мониторинга, таких как **Prometheus**, **Datadog** и **Graphite**.
+2. **Spring Boot Actuator**: это инструмент, который предоставляет готовые метрики для приложений на Spring. Он включает
+   в себя метрики для HTTP-запросов, использования памяти и других показателей.
+3. **Prometheus**: это система мониторинга, которая может собирать метрики от приложений на **Java Spring** с помощью
+   библиотеки **Micrometer**.
+4. **Grafana**: это инструмент для визуализации метрик, который может работать с различными системами мониторинга,
+   включая
+   **Prometheus**.
+5. **ELK Stack**: это набор инструментов для сбора, хранения и анализа логов приложений. Он также может использоваться
+   для создания метрик на основе логов
+
+### Пример реализации мониторинга с помощью Prometheus -> Grafana:
+
+Добавление зависимостей в **pom.xml**:
+
+```xml
+
+<dependency>
+  <groupId>io.micrometer</groupId>
+  <artifactId>micrometer-registry-prometheus</artifactId>
+  <version>1.7.0</version>
+</dependency>
+<dependency>
+<groupId>org.springframework.boot</groupId>
+<artifactId>spring-boot-starter-actuator</artifactId>
+</dependency>
+```
+
+Настройка метрик в **application.properties**:
+
+```yaml
+# настройки Actuator
+management.endpoints.web.exposure.include=*
+management.metrics.tags.application=${spring.application.name}
+
+  # настройки Micrometer и Prometheus
+management.metrics.export.prometheus.enabled=true
+management.metrics.export.prometheus.path=/metrics
+```
+
+Создание контроллера для тестирования:
+
+```java
+
+@RestController
+@RequestMapping("/api/test")
+public class TestController {
+
+    private final Counter testCounter = Metrics.counter("test_counter");
+
+    @GetMapping
+    public String test() {
+        testCounter.increment();
+        return "Test";
+    }
+}
+```
+
+Запуск приложения и проверка метрик в браузере:
+
+```yaml
+http://localhost:8080/actuator/prometheus
+```
+
+Настройка **Grafana** для визуализации метрик:
+
+1. Добавить источник данных **Prometheus**
+2. Создать дашборд и добавить график для метрики **test_counter**
+
+Теперь при обращении к **/api/test** значение метрики **test_counter** будет увеличиваться, а в Grafana можно будет
+увидеть график ее изменения в режиме реального времени.
+
+Это простой пример мониторинга в **Java Spring** с использованием **Prometheus** и **Grafana**. Настройки и параметры
+могут отличаться в зависимости от конкретных требований и задач.
